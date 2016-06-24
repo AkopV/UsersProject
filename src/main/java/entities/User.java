@@ -10,20 +10,20 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "Id", nullable = false)
-    private Long Id;
+    Long Id;
 
     @Column(name = "firstName", nullable = false)
-    private String firstName;
+    String firstName;
 
     @Column(name = "lastName", nullable = false)
-    private String lastName;
+    String lastName;
 
     @Column(name = "birthday", nullable = false)
-    private Date birthday;
+    Date birthday;
 
     @ManyToOne
     @Column(name = "role", nullable = false)
-    private Role role;
+    Role role;
 
     public User(String firstName, String lastName, Date birthday, Role role) {
         this.firstName = firstName;
