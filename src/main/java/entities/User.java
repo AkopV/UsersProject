@@ -13,17 +13,17 @@ public class User {
     private Long Id;
 
     @Column(name = "firstName", nullable = false)
-    String firstName;
+    private String firstName;
 
     @Column(name = "lastName", nullable = false)
-    String lastName;
+    private String lastName;
 
     @Column(name = "birthday", nullable = false)
-    Date birthday;
+    private Date birthday;
 
     @ManyToOne
     @Column(name = "role", nullable = false)
-    Role role;
+    private Role role;
 
     public User(String firstName, String lastName, Date birthday, Role role) {
         this.firstName = firstName;
