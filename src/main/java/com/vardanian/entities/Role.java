@@ -1,4 +1,4 @@
-package entities;
+package com.vardanian.entities;
 
 import javax.persistence.*;
 
