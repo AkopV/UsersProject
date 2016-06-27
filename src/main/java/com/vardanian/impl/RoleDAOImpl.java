@@ -30,7 +30,12 @@ public class RoleDAOImpl implements DAO<Role> {
     }
 
     @Override
-    public boolean removed(Role role) {
-        return false;
+    public Role findById(long id) {
+        return entityManager.find(Role.class, id);
+    }
+
+    @Override
+    public void removed(Role role) {
+        entityManager.remove(role);
     }
 }

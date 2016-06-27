@@ -29,7 +29,11 @@ public class UserDAOImpl implements DAO<User>{
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
-    public boolean removed(User user) {
-        return false;
+    public User findById(long id) {
+        return entityManager.find(User.class, id);
+    }
+
+    public void removed(User user) {
+        entityManager.remove(user);
     }
 }

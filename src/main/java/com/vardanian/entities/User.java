@@ -12,8 +12,15 @@ public class User {
     @Column(name = "Id", nullable = false)
     private Long Id;
 
+    @Column(name = "login", nullable = false)
+    private String login;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @Column(name = "firstName", nullable = false)
     private String firstName;
+
 
     @Column(name = "lastName", nullable = false)
     private String lastName;
@@ -22,10 +29,13 @@ public class User {
     private Date birthday;
 
     @ManyToOne
+    @JoinTable(name = "Role", joinColumns = @JoinColumn(name = "Id", referencedColumnName = "role_Id"))
     @Column(name = "role", nullable = false)
     private Role role;
 
-    public User(String firstName, String lastName, Date birthday, Role role) {
+    public User(String login, String password, String firstName, String lastName, Date birthday, Role role) {
+        this.login = login;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthday = birthday;
@@ -38,6 +48,22 @@ public class User {
 
     public void setId(Long id) {
         Id = id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -76,6 +102,8 @@ public class User {
     public String toString() {
         return "User{" +
                 "Id=" + Id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", birthday=" + birthday +
@@ -90,6 +118,9 @@ public class User {
 
         User user = (User) o;
 
+        if (!Id.equals(user.Id)) return false;
+        if (!login.equals(user.login)) return false;
+        if (!password.equals(user.password)) return false;
         if (!firstName.equals(user.firstName)) return false;
         if (!lastName.equals(user.lastName)) return false;
         if (!birthday.equals(user.birthday)) return false;
@@ -99,7 +130,10 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = firstName.hashCode();
+        int result = Id.hashCode();
+        result = 31 * result + login.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + firstName.hashCode();
         result = 31 * result + lastName.hashCode();
         result = 31 * result + birthday.hashCode();
         result = 31 * result + role.hashCode();
