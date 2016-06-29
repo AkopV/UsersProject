@@ -1,0 +1,46 @@
+body {
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: lightgray;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+
+.form-registration {
+    align-content: center;
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+.form-registration,
+.form-registration .checkbox {
+    margin-bottom: 10px;
+}
+.form-registration .checkbox {
+    font-weight: normal;
+}
+.form-registration .form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    padding: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.form-registration input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.form-registration input[type="password"] {
+    margin-bottom: -1px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
