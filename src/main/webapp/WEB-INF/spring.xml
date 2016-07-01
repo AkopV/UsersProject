@@ -33,5 +33,9 @@
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
+    <bean id='jdbcTemplate'
+          class='org.springframework.jdbc.core.simple.SimpleJdbcCall'>
+        <constructor-arg type='javax.sql.DataSource' ref='dataSource'/>
+    </bean>
 
 </beans>
