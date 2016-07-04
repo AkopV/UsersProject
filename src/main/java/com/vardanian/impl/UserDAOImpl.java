@@ -18,7 +18,11 @@ public class UserDAOImpl implements DAO<User>{
     private EntityManager entityManager;
 
     public void create(User user) {
-        entityManager.persist(user);
+        try {
+            entityManager.persist(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public List<User> list() {
@@ -33,7 +37,11 @@ public class UserDAOImpl implements DAO<User>{
         return entityManager.find(User.class, id);
     }
 
-    public void removed(User user) {
+    public void remove(User user) {
         entityManager.remove(user);
+    }
+
+    public User findByLogin(String login) {
+        return entityManager.find(User.class, login);
     }
 }

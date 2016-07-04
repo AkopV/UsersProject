@@ -8,7 +8,7 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "Id", nullable = false)
+    @Column(name = "id", nullable = false)
     private Long id;
 
     @Column(name = "name", nullable = false)
@@ -49,12 +49,15 @@ public class Role {
 
         Role role = (Role) o;
 
+        if (!id.equals(role.id)) return false;
         return name.equals(role.name);
 
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        int result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        return result;
     }
 }

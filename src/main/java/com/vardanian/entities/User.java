@@ -9,8 +9,8 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "Id", nullable = false)
-    private Long Id;
+    @Column(name = "id", nullable = false)
+    private Long id;
 
     @Column(name = "login", nullable = false)
     private String login;
@@ -29,7 +29,7 @@ public class User {
     private Date birthday;
 
     @ManyToOne
-    @JoinTable(name = "Role", joinColumns = @JoinColumn(name = "Id", referencedColumnName = "role_Id"))
+    @JoinTable(name = "Role", joinColumns = @JoinColumn(name = "id", referencedColumnName = "role_id"))
     @Column(name = "role", nullable = false)
     private Role role;
 
@@ -43,11 +43,11 @@ public class User {
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getLogin() {
@@ -101,7 +101,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "Id=" + Id +
+                "id=" + id +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
@@ -118,7 +118,7 @@ public class User {
 
         User user = (User) o;
 
-        if (!Id.equals(user.Id)) return false;
+        if (!id.equals(user.id)) return false;
         if (!login.equals(user.login)) return false;
         if (!password.equals(user.password)) return false;
         if (!firstName.equals(user.firstName)) return false;
@@ -130,7 +130,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = Id.hashCode();
+        int result = id.hashCode();
         result = 31 * result + login.hashCode();
         result = 31 * result + password.hashCode();
         result = 31 * result + firstName.hashCode();

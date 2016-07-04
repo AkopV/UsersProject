@@ -13,5 +13,7 @@ public interface DAO<T> {
 
     T findById(long id);
 
-    void removed(T entity);
+    void remove(T entity);
+
+    T findByLogin(String login);
 }

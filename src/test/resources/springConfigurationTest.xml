@@ -27,6 +27,7 @@
         <property name="password" value="Cesare1986"/>
     </bean>
 
+    <bean id="beanC" class="UserDAOImplTest"></bean>
     <bean id="entityManagerFactory"
           class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="persistenceUnitName" value="testPU"/>
@@ -60,9 +61,7 @@
 
         <persistence-unit name="usersProject" transaction-type="RESOURCE_LOCAL">
             <provider>org.hibernate.ejb.HibernatePersistence</provider>
-            <class>com.vardanian.entities</class>
-
-
+            <class>com.vardanian</class>
             <properties>
                 <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
                 <property name="hibernate.show_sql" value="true"/>

@@ -15,12 +15,14 @@ public class RoleDAOImpl implements DAO<Role> {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Override
     public void create(Role role) {
-        entityManager.persist(role);
+        try {
+            entityManager.persist(role);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    @Override
     public List<Role> list() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Role> criteriaQuery = builder.createQuery(Role.class);
@@ -29,13 +31,15 @@ public class RoleDAOImpl implements DAO<Role> {
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
-    @Override
     public Role findById(long id) {
         return entityManager.find(Role.class, id);
     }
 
-    @Override
-    public void removed(Role role) {
+    public void remove(Role role) {
         entityManager.remove(role);
+    }
+
+    public Role findByLogin(String login) {
+        return entityManager.find(Role.class, login);
     }
 }
