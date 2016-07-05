@@ -9,9 +9,11 @@ public interface DAO<T> {
 
     void create(T entity);
 
+    void update(T entity);
+
     List<T> list();
 
-    T findById(long id);
+    T findById(Long id);
 
     void remove(T entity);
 

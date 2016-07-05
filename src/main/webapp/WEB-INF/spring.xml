@@ -22,7 +22,7 @@
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
           destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/TESTS"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/test"/>
         <property name="username" value="root"/>
         <property name="password" value="Cesare1986"/>
     </bean>
@@ -48,29 +48,10 @@
         <property name="suffix">
             <value>.jsp</value>
         </property>
-
     </bean>
 
-
-    <context:component-scan base-package="com.vardanian"></context:component-scan>
-
-    <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-
-        <persistence-unit name="usersProject" transaction-type="RESOURCE_LOCAL">
-            <provider>org.hibernate.ejb.HibernatePersistence</provider>
-            <class>com.vardanian.entities</class>
-
-
-            <properties>
-                <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
-                <property name="hibernate.show_sql" value="true"/>
-                <property name="hibernate.format_sql" value="true"/>
-            </properties>
-        </persistence-unit>
-
-
-    </persistence>
+    <bean id="userDAOImpl" class="com.vardanian.impl.UserDAOImpl"/>
+    <bean id="roleDAOImpl" class="com.vardanian.impl.RoleDAOImpl"/>
+    <bean id="userServiceDAOImpl" class="com.vardanian.service.impl.UserServiceDAOImpl"/>
 
 </beans>

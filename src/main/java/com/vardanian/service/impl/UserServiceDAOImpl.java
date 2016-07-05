@@ -2,13 +2,17 @@ package com.vardanian.service.impl;
 
 import com.vardanian.dao.DAO;
 import com.vardanian.entities.User;
-import com.vardanian.service.Service;
+import com.vardanian.service.ServiceDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@org.springframework.stereotype.Service
-public class UserServiceImpl implements Service<User> {
+@Service
+@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+public class UserServiceDAOImpl implements ServiceDAO<User> {
 
     @Autowired
     private DAO<User> userDAO;
@@ -17,7 +21,11 @@ public class UserServiceImpl implements Service<User> {
         userDAO.create(user);
     }
 
-    public User getId(long id) {
+    public void update(User user){
+        userDAO.update(user);
+    }
+
+    public User getById(Long id) {
         return userDAO.findById(id);
     }
 

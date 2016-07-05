@@ -9,35 +9,31 @@
     <url>http://maven.apache.org</url>
 
     <properties>
-        <hibernate.version>5.2.0.Final</hibernate.version>
-        <hibernate.version>5.1.0.Final</hibernate.version>
-        <hibernate.version>3.5.6-Final</hibernate.version>
+        <hibernate-core.version>5.2.0.Final</hibernate-core.version>
+        <hibernate-entitymanager.version>5.1.0.Final</hibernate-entitymanager.version>
+        <hibernate-annotations.version>3.5.6-Final</hibernate-annotations.version>
         <spring.version>4.3.0.RELEASE</spring.version>
+        <spring-security.version>4.1.0.RELEASE</spring-security.version>
+        <commons-dbcp.version>1.4</commons-dbcp.version>
         <spring.securiry>3.2.0.RELEASE</spring.securiry>
         <jstl.version>1.2</jstl.version>
-
+        <junit.version>4.12</junit.version>
     </properties>
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>${hibernate.version}</version>
+            <version>${hibernate-core.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>${hibernate.version}</version>
+            <version>${hibernate-entitymanager.version}</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-annotations</artifactId>
-            <version>${hibernate.version}</version>
+            <version>${hibernate-annotations.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -67,32 +63,32 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>${spring.securiry}</version>
+            <version>${spring-security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
-            <version>${spring.securiry}</version>
+            <version>${spring-security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
-            <version>${spring.securiry}</version>
+            <version>${spring-security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
-            <version>${spring.securiry}</version>
+            <version>${spring-security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>${spring.securiry}</version>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
-            <version>1.2.2</version>
+            <version>${commons-dbcp.version}</version>
         </dependency>
         <dependency>
             <groupId>jstl</groupId>
@@ -102,7 +98,13 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.9.10</version>
             <scope>test</scope>
         </dependency>
 

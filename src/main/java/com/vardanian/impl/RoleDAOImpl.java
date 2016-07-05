@@ -23,6 +23,10 @@ public class RoleDAOImpl implements DAO<Role> {
         }
     }
 
+    public void update(Role role) {
+        entityManager.persist(role);
+    }
+
     public List<Role> list() {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Role> criteriaQuery = builder.createQuery(Role.class);
@@ -31,7 +35,7 @@ public class RoleDAOImpl implements DAO<Role> {
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
-    public Role findById(long id) {
+    public Role findById(Long id) {
         return entityManager.find(Role.class, id);
     }
 

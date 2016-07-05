@@ -21,7 +21,15 @@ public class UserDAOImpl implements DAO<User>{
         try {
             entityManager.persist(user);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("User not create: " + e);
+        }
+    }
+
+    public void update(User user) {
+        try {
+            entityManager.persist(user);
+        } catch (Exception e) {
+            System.err.println("User not update: " + e);
         }
     }
 
@@ -33,12 +41,16 @@ public class UserDAOImpl implements DAO<User>{
         return entityManager.createQuery(criteriaQuery).getResultList();
     }
 
-    public User findById(long id) {
+    public User findById(Long id) {
         return entityManager.find(User.class, id);
     }
 
     public void remove(User user) {
-        entityManager.remove(user);
+        try {
+            entityManager.remove(user);
+        } catch (Exception e) {
+            System.err.println("User not remove: " + e);
+        }
     }
 
     public User findByLogin(String login) {
