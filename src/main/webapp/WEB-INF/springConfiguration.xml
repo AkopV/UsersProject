@@ -2,71 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:security="http://www.springframework.org/schema/security"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-  http://www.springframework.org/schema/mvc
-  http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
-  http://www.springframework.org/schema/context
-  http://www.springframework.org/schema/context/spring-context-3.0.xsd
-  http://www.springframework.org/schema/tx
-  http://www.springframework.org/schema/tx/spring-tx.xsd
-  http://www.springframework.org/schema/aop
-  http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
-
-    <mvc:default-servlet-handler/>
-    <mvc:annotation-driven/>
-    <mvc:resources mapping="/resources/**" location="/resources/"/>
-    <tx:annotation-driven/>
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
     <context:component-scan base-package="com.vardanian"/>
-    <!-- Database configuration -->
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-          destroy-method="close">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/test"/>
-        <property name="username" value="root"/>
-        <property name="password" value="Cesare1986"/>
-    </bean>
-    <!-- Hibernate configuration -->
-    <bean id="sessionFactory"
-          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"></property>
-        <property name="mappingResources">
-            <list>
-                <value>Role.hbm.xml</value>
-                <value>User.hbm.xml</value>
-            </list>
-        </property>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
-                <prop key="hibernate.show_sql">true</prop>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
-                <prop key="current_session_context_class">thread</prop>
-            </props>
-        </property>
 
-    </bean>
-
-
-    <bean id="entityManagerFactory"
-          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="persistenceUnitName" value="testPU"/>
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory"/>
-    </bean>
-    <bean id="jdbcTemplate"
-          class="org.springframework.jdbc.core.simple.SimpleJdbcCall">
-        <constructor-arg type="javax.sql.DataSource" ref="dataSource"/>
-    </bean>
-
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">
             <value>/WEB-INF/</value>
         </property>
@@ -75,23 +16,31 @@
         </property>
     </bean>
 
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="testPU"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="jdbcTemplate"
+          class="org.springframework.jdbc.core.simple.SimpleJdbcCall">
+        <constructor-arg type="javax.sql.DataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/test"/>
+        <property name="username" value="root"/>
+        <property name="password" value="Cesare1986"/>
+    </bean>
+
+
     <bean id="userDAOImpl" class="com.vardanian.impl.UserDAOImpl"/>
     <bean id="roleDAOImpl" class="com.vardanian.impl.RoleDAOImpl"/>
     <bean id="userServiceDAOImpl" class="com.vardanian.service.impl.UserServiceDAOImpl"/>
-    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-        <property name="basename" value="/WEB-INF/"></property>
-    </bean>
 
-    <security:http auto-config="true">
-        <security:intercept-url pattern="/editUsers" access="ROLE_ADMIN"></security:intercept-url>
-        <security:intercept-url pattern="/editRoles" access="ROLE_ADMIN"></security:intercept-url>
-        <security:form-login login-page="/index.jsp" default-target-url="/login" authentication-failure-url="/error"></security:form-login>
-        <security:logout logout-success-url="/logout"></security:logout>
-    </security:http>
-
-    <security:authentication-manager>
-        <security:authentication-provider user-service-ref="customUserDetailsService"></security:authentication-provider>
-    </security:authentication-manager>
-
-    <security:jdbc-user-service id="customUserDetailsService" data-source-ref="dataSource"/>
 </beans>

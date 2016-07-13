@@ -1,6 +1,7 @@
 import com.vardanian.entities.Role;
 import com.vardanian.entities.User;
 import com.vardanian.impl.UserDAOImpl;
+import com.vardanian.service.impl.UserServiceDAOImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,50 +26,38 @@ public class UserDAOImplTest {
     @Autowired
     private UserDAOImpl userDAO;
 
-    @BeforeTest
-    public void beforeRemove(){
-        try {
-            for (User user : userDAO.list()) {
-                userDAO.remove(user);
-            }
-        } catch (Exception e) {
-            System.err.println("Error, list empty: " + e);
-        }
-    }
+    @Autowired
+    private UserServiceDAOImpl userServiceDAO;
 
     @Test
-    @Transactional
     public void testCreate() {
-        userDAO.create(new User("login", "password", "firstName", "lastName", new Date(1986, 05, 26), new Role("admin")));
-        assertEquals(userDAO, true);
+        userServiceDAO.create(new User("login", "password", "firstName", "lastName", new Date(1986, 05, 26), new Role("admin")));
+        assertEquals(userServiceDAO, true);
     }
 
     @Test
-    @Transactional
     public void testFindById(){
         User user = new User("login", "password", "firstName", "lastName", new Date(1986, 05, 26), new Role("admin"));
-        userDAO.create(user);
-        User checkUser = userDAO.findById(user.getId());
+        userServiceDAO.create(user);
+        User checkUser = userServiceDAO.getById(user.getId());
         assertEquals(user, checkUser);
     }
 
     @Test
-    @Transactional
     public void testFindByLogin() {
         User user = new User("login", "password", "firstName", "lastName", new Date(1986, 05, 26), new Role("admin"));
-        userDAO.create(user);
-        User checkUser = userDAO.findByLogin(user.getLogin());
-        assertEquals(user, checkUser);
+        userServiceDAO.create(user);
+        assertEquals(user, userServiceDAO.getByLogin(user.getLogin()));
     }
 
     @Test
-    @Transactional
     public void testRemove() {
         User user = new User("login", "password", "firstName", "lastName", new Date(1986, 05, 26), new Role("admin"));
-        userDAO.create(user);
-        User checkUser = userDAO.findById(user.getId());
+        userServiceDAO.create(user);
+        User checkUser = userServiceDAO.getById(user.getId());
         assertEquals(user, checkUser);;
-        userDAO.remove(user);
-        assertNull(userDAO.findById(user.getId()));
+        userServiceDAO.remove(user);
+        checkUser = userServiceDAO.getById(user.getId());
+        assertNull(checkUser);
     }
 }
