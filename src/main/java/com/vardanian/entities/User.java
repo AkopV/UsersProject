@@ -1,5 +1,7 @@
 package com.vardanian.entities;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -8,7 +10,8 @@ import java.util.Date;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GenericGenerator(name = "increment", strategy = "increment")
+    @GeneratedValue(generator = "increment")
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -28,12 +31,15 @@ public class User {
     @Column(name = "birthday", nullable = false)
     private Date birthday;
 
-    @ManyToOne
-    @JoinTable(name = "Role", joinColumns = @JoinColumn(name = "id", referencedColumnName = "role_id"))
-    @Column(name = "role", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role role;
 
-    public User(String login, String password, String firstName, String lastName, Date birthday, Role role) {
+    public User() {
+    }
+
+    public User(Long id, String login, String password, String firstName, String lastName, Date birthday, Role role) {
+        this.id = id;
         this.login = login;
         this.password = password;
         this.firstName = firstName;
@@ -41,6 +47,9 @@ public class User {
         this.birthday = birthday;
         this.role = role;
     }
+
+
+
 
     public Long getId() {
         return id;
