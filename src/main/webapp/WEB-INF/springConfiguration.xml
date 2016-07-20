@@ -30,5 +30,8 @@
         <constructor-arg type="javax.sql.DataSource" ref="dataSource"/>
     </bean>
 
+    <bean id="userService" class="com.vardanian.service.impl.UserServiceImpl"></bean>
+    <bean id="roleService" class="com.vardanian.service.impl.RoleServiceImpl"></bean>
+
     <jdbc:embedded-database id="dataSource"/>
 </beans>

@@ -1,4 +1,4 @@
-package com.vardanian.dao.impl;
+package com.vardanian.service.impl;
 
 import com.vardanian.dao.RoleDAO;
 import com.vardanian.entities.Role;

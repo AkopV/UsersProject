@@ -1,10 +1,11 @@
-package com.vardanian.dao.impl;
+package com.vardanian.service.impl;
 
 import com.vardanian.dao.UserDAO;
 import com.vardanian.entities.User;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAttribute;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -62,7 +63,7 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void remove(User user) {
         try {
-            entityManager.remove(user);
+            entityManager.remove(entityManager.contains(user) ? user : entityManager.merge(user));
         } catch (Exception e) {
             System.err.println("User not remove: " + e);
         }

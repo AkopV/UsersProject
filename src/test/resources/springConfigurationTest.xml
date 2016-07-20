@@ -36,8 +36,12 @@
 
     <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"></bean>
 
-    <bean id="roleDAO" class="com.vardanian.dao.impl.RoleDAOImpl"></bean>
+    <bean id="roleDAO" class="com.vardanian.service.impl.RoleDAOImpl"></bean>
 
-    <bean id="userDAO" class="com.vardanian.dao.impl.UserDAOImpl"></bean>
+    <bean id="userDAO" class="com.vardanian.service.impl.UserDAOImpl"></bean>
+
+    <bean id="userService" class="com.vardanian.service.impl.UserServiceImpl"></bean>
+
+    <bean id="roleService" class="com.vardanian.service.impl.RoleServiceImpl"></bean>
 
 </beans>
