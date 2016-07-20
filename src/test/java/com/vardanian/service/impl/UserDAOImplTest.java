@@ -67,6 +67,7 @@ public class UserDAOImplTest {
     @Transactional
     @Rollback(true)
     public void testRemove() {
+        userService.create(user);
         if(user != null) {
             userService.remove(user);
         }
