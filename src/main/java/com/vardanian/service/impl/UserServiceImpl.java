@@ -5,6 +5,7 @@ import com.vardanian.entities.User;
 import com.vardanian.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDAO userDAO;
 
+    @Rollback
     @Override
     public void create(User user) {
         userDAO.create(user);
@@ -43,7 +45,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void remove(User user) {
         userDAO.remove(user);
     }

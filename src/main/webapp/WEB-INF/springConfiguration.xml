@@ -5,6 +5,7 @@
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
+    <context:property-placeholder location="classpath*:persistence.xml"></context:property-placeholder>
     <context:component-scan base-package="com.vardanian.*"/>
 
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -16,14 +17,37 @@
         </property>
     </bean>
 
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    <!--<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">-->
+        <!--<property name="entityManagerFactory" ref="entityManagerFactory"/>-->
+    <!--</bean>-->
+
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
     </bean>
-    <bean id="entityManagerFactory"
-          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="persistenceUnitName" value="Tutorial"/>
-        <property name="dataSource" ref="dataSource"/>
+
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="com.vardanian.*" />
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+
+            </props>
+        </property>
     </bean>
+
+    <bean id="persistenceExceptionTranslationPostProcessor"
+          class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+
+
+    <!--<bean id="entityManagerFactory"-->
+          <!--class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">-->
+        <!--<property name="persistenceUnitName" value="Tutorial"/>-->
+        <!--<property name="dataSource" ref="dataSource"/>-->
+    <!--</bean>-->
 
     <bean id="jdbcTemplate"
           class="org.springframework.jdbc.core.simple.SimpleJdbcCall">

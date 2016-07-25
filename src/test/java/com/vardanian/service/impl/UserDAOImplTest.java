@@ -11,23 +11,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.NoResultException;
 import java.sql.Date;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/springConfigurationTest.xml")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserDAOImplTest {
+
+    User user;
 
     @Autowired
     private UserService userService;
@@ -35,22 +34,19 @@ public class UserDAOImplTest {
     @Autowired
     private RoleService roleService;
 
-    User user;
-    Role role;
-    Date date;
-
     @Before
     public void setUp() throws Exception {
         TestUtils.setUserBirthday(1986, Calendar.SEPTEMBER, 9);
-        date = TestUtils.convertDate(TestUtils.birthDay);
-        role = new Role("test");
+        Date date = TestUtils.convertDate(TestUtils.birthDay);
+        Role role = new Role("test");
         user = new User(1L, "testuser", "password", "firstName", "lastName", date, role);
+        userService.create(user);
     }
 
     @Test
     public void testCreate() {
         userService.create(user);
-        user = userService.findByLogin("testuser");
+        User user = userService.findByLogin("testuser");
         assertEquals(user.getLogin(), "testuser");
     }
 
@@ -63,20 +59,12 @@ public class UserDAOImplTest {
         assertEquals(user.getLogin(), "testuser2");
     }
 
-    @Test
-    @Transactional
-    @Rollback(true)
+    @Test (expected = NoResultException.class)
     public void testRemove() {
         userService.create(user);
-        if(user != null) {
-            userService.remove(user);
-        }
-        Assert.assertEquals(user.getLogin(), null);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
+        userService.remove(user);
+        User check = userService.findByLogin(user.getLogin());
+        Assert.assertEquals(null, check);
     }
 
     @Test

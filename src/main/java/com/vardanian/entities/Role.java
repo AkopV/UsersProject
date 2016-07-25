@@ -3,8 +3,10 @@ package com.vardanian.entities;
 import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OptimisticLockType;
 
 @Entity
+@org.hibernate.annotations.Entity(optimisticLock = OptimisticLockType.ALL)
 @Table(name = "Role")
 public class Role {
 
