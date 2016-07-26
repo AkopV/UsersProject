@@ -31,9 +31,6 @@ public class UserDAOImplTest {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private RoleService roleService;
-
     @Before
     public void setUp() throws Exception {
         TestUtils.setUserBirthday(1986, Calendar.SEPTEMBER, 9);
@@ -47,7 +44,7 @@ public class UserDAOImplTest {
     public void testCreate() {
         userService.create(user);
         User user = userService.findByLogin("testuser");
-        assertEquals(user.getLogin(), "testuser");
+        assertEquals("testuser", user.getLogin());
     }
 
     @Test
@@ -56,7 +53,7 @@ public class UserDAOImplTest {
         user.setLogin("testuser2");
         userService.update(user);
         user = userService.findByLogin("testuser2");
-        assertEquals(user.getLogin(), "testuser2");
+        assertEquals("testuser2", user.getLogin());
     }
 
     @Test (expected = NoResultException.class)
@@ -71,13 +68,13 @@ public class UserDAOImplTest {
     public void testFindByLogin() {
         userService.create(user);
         user = userService.findByLogin("testuser");
-        assertEquals(user.getLogin(), "testuser");
+        assertEquals("testuser", user.getLogin());
     }
 
     @Test
     public void testFindById() {
         userService.create(user);
         user = userService.findById(1L);
-        assertEquals(user.getId().toString(), "1");
+        assertEquals("1", user.getId().toString());
     }
 }

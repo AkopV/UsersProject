@@ -19,43 +19,31 @@
         <property name="password" value="Cesare1986"/>
     </bean>
 
-    <!--<bean id="entityManagerFactory"-->
-          <!--class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">-->
-        <!--<property name="jpaVendorAdapter">-->
-
-
-            <!--<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>-->
-        <!--</property>-->
-        <!--<property name="persistenceUnitName" value="Tutorial"/>-->
-        <!--<property name="persistenceXmlLocation" value="classpath:persistence.xml"></property>-->
-        <!--<property name="dataSource" ref="dataSource"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">-->
-        <!--<property name="entityManagerFactory" ref="entityManagerFactory"/>-->
-        <!--<property name="jpaDialect" ref="jpaDialect"></property>-->
-    <!--</bean>-->
-
-    <bean id="transactionManager"
-          class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory" />
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <property name="persistenceUnitName" value="Tutorial"/>
+        <property name="persistenceXmlLocation" value="classpath:persistence.xml"></property>
+        <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="sessionFactory"
-          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+        <property name="jpaDialect" ref="jpaDialect"></property>
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="packagesToScan" value="com.vardanian.*" />
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
-                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
-            </props>
+        <property name="annotatedClasses">
+            <list>
+                <value>com.vardanian.entities.Role</value>
+                <value>com.vardanian.entities.User</value>
+            </list>
         </property>
     </bean>
-
-    <bean id="persistenceExceptionTranslationPostProcessor"
-          class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
-
 
 
     <bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"></bean>
@@ -64,8 +52,11 @@
 
     <bean id="userDAO" class="com.vardanian.dao.impl.UserDAOImpl"></bean>
 
-    <bean id="userService" class="com.vardanian.service.impl.UserServiceImpl"></bean>
+    <bean id="userService" class="com.vardanian.service.impl.UserServiceImpl">
+        <property name="userDAO" ref="userDAO"/>
+    </bean>
 
-    <bean id="roleService" class="com.vardanian.service.impl.RoleServiceImpl"></bean>
-
+    <bean id="roleService" class="com.vardanian.service.impl.RoleServiceImpl">
+        <property name="roleDAO" ref="roleDAO"/>
+    </bean>
 </beans>

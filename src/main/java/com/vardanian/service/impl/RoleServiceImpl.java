@@ -1,13 +1,16 @@
 package com.vardanian.service.impl;
 
 import com.vardanian.dao.RoleDAO;
+import com.vardanian.dao.impl.RoleDAOImpl;
 import com.vardanian.entities.Role;
 import com.vardanian.service.RoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public class RoleServiceImpl implements RoleService {
 
+    @Autowired
     private RoleDAO roleDAO;
 
     @Override
@@ -39,5 +42,8 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void remove(Role role) {
         roleDAO.remove(role);
+    }
+
+    public void setRoleDAO(RoleDAOImpl roleDAO) {
     }
 }

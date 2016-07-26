@@ -1,6 +1,7 @@
 package com.vardanian.service.impl;
 
 import com.vardanian.dao.UserDAO;
+import com.vardanian.dao.impl.UserDAOImpl;
 import com.vardanian.entities.User;
 import com.vardanian.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public void remove(User user) {
         userDAO.remove(user);
+    }
+
+    public void setUserDAO(UserDAOImpl userDAO) {
     }
 }
