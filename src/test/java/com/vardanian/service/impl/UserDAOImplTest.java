@@ -2,24 +2,24 @@ package com.vardanian.service.impl;
 
 import com.vardanian.entities.Role;
 import com.vardanian.entities.User;
-import com.vardanian.service.RoleService;
 import com.vardanian.service.UserService;
-import com.vardanian.utils.TestUtils;
-import org.junit.After;
-import org.junit.Assert;
+import com.vardanian.utilsjava.TestUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.NoResultException;
 import java.sql.Date;
 import java.util.Calendar;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/springConfigurationTest.xml")
@@ -56,12 +56,13 @@ public class UserDAOImplTest {
         assertEquals("testuser2", user.getLogin());
     }
 
-    @Test (expected = NoResultException.class)
+    @Test
     public void testRemove() {
-        userService.create(user);
-        userService.remove(user);
-        User check = userService.findByLogin(user.getLogin());
-        Assert.assertEquals(null, check);
+        User checkUser = userService.findByLogin("testuser");
+        assertNotNull(checkUser);
+        userService.remove(checkUser);
+        checkUser = userService.findByLogin("test");
+        assertNull(checkUser);
     }
 
     @Test

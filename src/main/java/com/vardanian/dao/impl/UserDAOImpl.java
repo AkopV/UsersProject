@@ -2,25 +2,15 @@ package com.vardanian.dao.impl;
 
 import com.vardanian.dao.UserDAO;
 import com.vardanian.entities.User;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAttribute;
+
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -70,17 +60,26 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void remove(User user) {
         try {
-            entityManager.remove(entityManager.contains(user) ? user : entityManager.merge(user));
+            User userToBeRemoved = entityManager.getReference(User.class, user.getId());
+            entityManager.remove(userToBeRemoved);
         } catch (Exception e) {
             System.err.println("User not remove: " + e);
-        } finally {
-            entityManager.close();
         }
     }
 
     @Override
     public User findByLogin(String login) {
-        String hsql = "SELECT user FROM User user WHERE user.login LIKE :login";
-        return (User) entityManager.createQuery(hsql).setParameter("login", login).getSingleResult();
+        Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.login LIKE :login")
+                .setParameter("login", login);
+        return (User) getSingleResult(query);
+    }
+
+    public static Object getSingleResult(Query query) {
+        query.setMaxResults(1);
+        List<Object> list = query.getResultList();
+        if (list == null || list.isEmpty()) {
+            return null;
+        }
+        return list.get( 0 );
     }
 }

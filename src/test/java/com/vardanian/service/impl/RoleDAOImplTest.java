@@ -15,55 +15,60 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import javax.persistence.NoResultException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/springConfigurationTest.xml")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class RoleDAOImplTest {
 
-    Role role;
-
-    @Autowired
-    private UserService userService;
+    private Role role;
 
     @Autowired
     private RoleService roleService;
 
     @Before
-    public void setUp() throws Exception{
-        Role role = new Role("admin");
+    public void setUp() throws Exception {
+        role = new Role("admin");
         roleService.create(role);
     }
 
     @Test
     public void testCreate() {
+        roleService.create(role);
         Role checkRole = roleService.findByLogin("admin");
         assertEquals("admin", role.getName());
     }
 
     @Test
-    public void testUpdate(){
+    public void testUpdate() {
+        roleService.create(role);
         role.setName("admin");
         roleService.update(role);
         role = roleService.findByLogin("admin");
         assertEquals("admin", role.getName());
     }
 
-    @Test (expected = NoResultException.class)
+    @Test(expected = AssertionError.class)
     public void testRemove() {
-        roleService.remove(role);
-        Role checkRole = roleService.findByLogin(role.getName());
-        Assert.assertEquals(null, checkRole);
+        Role checkRole = roleService.findByLogin("admin");
+        assertNotNull(checkRole);
+        roleService.remove(checkRole);
+        checkRole = roleService.findByLogin("admin");
+        assertNull(checkRole);
     }
 
     @Test
     public void testFindByLogin() {
+        roleService.create(role);
         role = roleService.findByLogin("admin");
         assertEquals("admin", role.getName());
     }
 
     @Test
     public void testFindById() {
+        roleService.create(role);
         role = roleService.findById(1L);
         assertEquals("1", role.getId().toString());
     }

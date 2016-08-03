@@ -34,30 +34,27 @@
         <constructor-arg type="javax.sql.DataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
-        <property name="packagesToScan" value="com.vardanian.*" />
-        <property name="annotatedClasses">
-            <list>
-                <value>com.vardanian.entities.Role</value>
-                <value>com.vardanian.entities.User</value>
-            </list>
-        </property>
-    </bean>
+    <!--<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">-->
+        <!--<property name="dataSource" ref="dataSource" />-->
+        <!--<property name="packagesToScan" value="com.vardanian.*" />-->
+        <!--<property name="annotatedClasses">-->
+            <!--<list>-->
+                <!--<value>com.vardanian.entities.Role</value>-->
+                <!--<value>com.vardanian.entities.User</value>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
 
     <bean id="roleDAO" class="com.vardanian.dao.impl.RoleDAOImpl"></bean>
 
     <bean id="userDAO" class="com.vardanian.dao.impl.UserDAOImpl"></bean>
 
     <bean id="userService" class="com.vardanian.service.impl.UserServiceImpl">
-        <property name="userDAO" ref="userDAO"/>
+        <!--<property name="userDAO" ref="userDAO"/>-->
     </bean>
 
     <bean id="roleService" class="com.vardanian.service.impl.RoleServiceImpl">
-        <property name="roleDAO" ref="roleDAO"/>
+        <!--<property name="roleDAO" ref="roleDAO"/>-->
     </bean>
-
-
-
     <jdbc:embedded-database id="dataSource"/>
 </beans>
