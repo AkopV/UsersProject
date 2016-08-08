@@ -2,9 +2,8 @@ package com.vardanian.dao.impl;
 
 import com.vardanian.dao.UserDAO;
 import com.vardanian.entities.User;
+import com.vardanian.utils.Utils;
 import org.springframework.stereotype.Repository;
-
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -71,15 +70,6 @@ public class UserDAOImpl implements UserDAO {
     public User findByLogin(String login) {
         Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.login LIKE :login")
                 .setParameter("login", login);
-        return (User) getSingleResult(query);
-    }
-
-    public static Object getSingleResult(Query query) {
-        query.setMaxResults(1);
-        List<Object> list = query.getResultList();
-        if (list == null || list.isEmpty()) {
-            return null;
-        }
-        return list.get( 0 );
+        return (User) Utils.getSingleResult(query);
     }
 }

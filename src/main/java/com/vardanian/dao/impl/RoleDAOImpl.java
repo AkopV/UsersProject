@@ -2,26 +2,16 @@ package com.vardanian.dao.impl;
 
 import com.vardanian.dao.RoleDAO;
 import com.vardanian.entities.Role;
-import org.hibernate.Criteria;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.jdbc.JdbcTestUtils;
+import com.vardanian.utils.Utils;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.ListResourceBundle;
-import org.hibernate.cfg.Configuration;
+
 
 public class RoleDAOImpl implements RoleDAO {
 
@@ -84,16 +74,7 @@ public class RoleDAOImpl implements RoleDAO {
     public Role findByLogin(String login) {
         Query query = entityManager.createQuery("SELECT role FROM Role role WHERE role.name LIKE :name")
                 .setParameter("name", login);
-        return (Role) getSingleResult(query);
+        return (Role) Utils.getSingleResult(query);
 
-    }
-
-    public static Object getSingleResult(Query query) {
-        query.setMaxResults(1);
-        List<Object> list = query.getResultList();
-        if (list == null || list.isEmpty()) {
-            return null;
-        }
-        return list.get(0);
     }
 }
