@@ -27,8 +27,6 @@ public class RoleDAOImplTest {
 
     private Role role;
 
-    private EntityManager em;
-
     @Autowired
     private RoleService roleService;
 
