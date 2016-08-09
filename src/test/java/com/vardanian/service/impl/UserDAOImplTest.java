@@ -3,30 +3,29 @@ package com.vardanian.service.impl;
 import com.vardanian.entities.Role;
 import com.vardanian.entities.User;
 import com.vardanian.service.UserService;
-import com.vardanian.utilsjava.TestUtils;
+import com.vardanian.utils.TestUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/springConfigurationTest.xml")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserDAOImplTest {
 
-    User user;
+    private User user;
 
     @Autowired
     private UserService userService;
@@ -35,9 +34,8 @@ public class UserDAOImplTest {
     public void setUp() throws Exception {
         TestUtils.setUserBirthday(1986, Calendar.SEPTEMBER, 9);
         Date date = TestUtils.convertDate(TestUtils.birthDay);
-        Role role = new Role("test");
+        Role role = new Role(1L, "test");
         user = new User(1L, "testuser", "password", "firstName", "lastName", date, role);
-        userService.create(user);
     }
 
     @Test
@@ -57,12 +55,25 @@ public class UserDAOImplTest {
     }
 
     @Test
+    public void testList() {
+        assertEquals(0, userService.list().size());
+        List<User> users = Arrays.asList(
+                new User(1L, "login", "password", "firstName", "lastName", new Date(1990, 5, 9), new Role(1L, "admin")),
+                new User(2L, "login2", "password2", "firstName2", "lastName2", new Date(1992, 8, 19), new Role(2L, "user")),
+                new User(3L, "login3", "password23",  "firstName3", "lastName2", new Date(1992, 8, 19), new Role(3L, "user")));
+        for (User user : users) {
+            userService.create(user);
+        }
+        List<User> checkUsers = userService.list();
+        assertEquals(3, checkUsers.size());
+    }
+
+    @Test
     public void testRemove() {
         User checkUser = userService.findByLogin("testuser");
         assertNotNull(checkUser);
         userService.remove(checkUser);
-        checkUser = userService.findByLogin("test");
-        assertNull(checkUser);
+        checkUser = userService.findByLogin("testuser");
     }
 
     @Test
@@ -75,7 +86,7 @@ public class UserDAOImplTest {
     @Test
     public void testFindById() {
         userService.create(user);
-        user = userService.findById(1L);
-        assertEquals("1", user.getId().toString());
+        User checkUser = userService.findById(user.getId());
+        assertNotNull(checkUser);
     }
 }

@@ -71,9 +71,9 @@ public class RoleDAOImpl implements RoleDAO {
 
 
     @Override
-    public Role findByLogin(String login) {
+    public Role findByName(String name) {
         Query query = entityManager.createQuery("SELECT role FROM Role role WHERE role.name LIKE :name")
-                .setParameter("name", login);
+                .setParameter("name", name);
         return (Role) Utils.getSingleResult(query);
 
     }

@@ -16,5 +16,5 @@ public interface RoleDAO {
 
     void remove(Role role);
 
-    Role findByLogin(String login);
+    Role findByName(String name);
 }

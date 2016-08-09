@@ -2,8 +2,8 @@ package com.vardanian.service.impl;
 
 import com.vardanian.entities.Role;
 import com.vardanian.service.RoleService;
-import com.vardanian.service.UserService;
-import org.junit.Assert;
+import org.hibernate.Query;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,11 +12,13 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.persistence.NoResultException;
+import javax.persistence.EntityManager;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/springConfigurationTest.xml")
@@ -25,51 +27,71 @@ public class RoleDAOImplTest {
 
     private Role role;
 
+    private EntityManager em;
+
     @Autowired
     private RoleService roleService;
 
     @Before
     public void setUp() throws Exception {
-        role = new Role("admin");
-        roleService.create(role);
+        role = new Role(1L, "admin");
+
+    }
+
+    @After
+    public void tearDown() throws Exception {
+       roleService.remove(role);
     }
 
     @Test
     public void testCreate() {
         roleService.create(role);
-        Role checkRole = roleService.findByLogin("admin");
+        Role checkRole = roleService.findByName("admin");
         assertEquals("admin", role.getName());
     }
 
     @Test
     public void testUpdate() {
         roleService.create(role);
-        role.setName("admin");
+        role.setName("user");
         roleService.update(role);
-        role = roleService.findByLogin("admin");
-        assertEquals("admin", role.getName());
-    }
-
-    @Test(expected = AssertionError.class)
-    public void testRemove() {
-        Role checkRole = roleService.findByLogin("admin");
-        assertNotNull(checkRole);
-        roleService.remove(checkRole);
-        checkRole = roleService.findByLogin("admin");
-        assertNull(checkRole);
+        role = roleService.findByName("user");
+        assertEquals("user", role.getName());
     }
 
     @Test
-    public void testFindByLogin() {
+    public void testList(){
+    assertEquals(0, roleService.list().size());
+    List<Role> roles = Arrays.asList(
+            new Role(1L, "admin"),
+            new Role(2L, "user"),
+            new Role(3L, "user"));
+    for (Role role : roles) {
         roleService.create(role);
-        role = roleService.findByLogin("admin");
-        assertEquals("admin", role.getName());
+    }
+    List<Role> checkRoles = roleService.list();
+    assertEquals(3, checkRoles.size());
+}
+
+    @Test
+    public void testRemove() {
+        Role checkRole = roleService.findByName("admin");
+        assertNotNull(checkRole);
+        roleService.remove(checkRole);
+        checkRole = roleService.findByName("admin");
+    }
+
+    @Test
+    public void testFindByName() {
+        roleService.create(role);
+        Role checkRole = roleService.findByName("admin");
+        assertEquals("admin", checkRole.getName());
     }
 
     @Test
     public void testFindById() {
         roleService.create(role);
-        role = roleService.findById(1L);
-        assertEquals("1", role.getId().toString());
+        Role checkRole = roleService.findById(1L);
+        assertEquals("1", checkRole.getId().toString());
     }
 }

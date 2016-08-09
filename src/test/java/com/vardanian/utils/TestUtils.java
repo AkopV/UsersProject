@@ -1,4 +1,4 @@
-package com.vardanian.utilsjava;
+package com.vardanian.utils;
 
 import java.sql.Date;
 import java.util.Calendar;
