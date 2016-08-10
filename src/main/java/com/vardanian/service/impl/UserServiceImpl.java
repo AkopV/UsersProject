@@ -19,7 +19,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDAO userDAO;
 
-    @Rollback
+    public void setUserDAO(UserDAOImpl userDAO) {
+    }
+
     @Override
     public void create(User user) {
         userDAO.create(user);
@@ -48,8 +50,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public void remove(User user) {
         userDAO.remove(user);
-    }
-
-    public void setUserDAO(UserDAOImpl userDAO) {
     }
 }

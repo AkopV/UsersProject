@@ -10,9 +10,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -38,6 +42,12 @@ public class UserDAOImplTest {
         user = new User(1L, "testuser", "password", "firstName", "lastName", date, role);
     }
 
+//    @After
+//    public void tearDown() throws Exception {
+//        EntityManager entityManager = null;
+//        entityManager.clear();
+//    }
+
     @Test
     public void testCreate() {
         userService.create(user);
@@ -56,8 +66,9 @@ public class UserDAOImplTest {
 
     @Test
     public void testList() {
+        List<User> users;
         assertEquals(0, userService.list().size());
-        List<User> users = Arrays.asList(
+        users = Arrays.asList(
                 new User(1L, "login", "password", "firstName", "lastName", new Date(1990, 5, 9), new Role(1L, "admin")),
                 new User(2L, "login2", "password2", "firstName2", "lastName2", new Date(1992, 8, 19), new Role(2L, "user")),
                 new User(3L, "login3", "password23",  "firstName3", "lastName2", new Date(1992, 8, 19), new Role(3L, "user")));
@@ -69,11 +80,16 @@ public class UserDAOImplTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(true)
     public void testRemove() {
         User checkUser = userService.findByLogin("testuser");
         assertNotNull(checkUser);
-        userService.remove(checkUser);
-        checkUser = userService.findByLogin("testuser");
+        if (checkUser != null) {
+            userService.remove(checkUser);
+        }
+        checkUser = userService.findByLogin(user.getLogin());
+        assertEquals(null, checkUser);
     }
 
     @Test
@@ -87,6 +103,6 @@ public class UserDAOImplTest {
     public void testFindById() {
         userService.create(user);
         User checkUser = userService.findById(user.getId());
-        assertNotNull(checkUser);
+        assertEquals(1, checkUser.getId().toString());
     }
 }

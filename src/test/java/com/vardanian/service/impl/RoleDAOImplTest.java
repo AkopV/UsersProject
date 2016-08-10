@@ -36,11 +36,6 @@ public class RoleDAOImplTest {
 
     }
 
-    @After
-    public void tearDown() throws Exception {
-       roleService.remove(role);
-    }
-
     @Test
     public void testCreate() {
         roleService.create(role);
@@ -75,8 +70,11 @@ public class RoleDAOImplTest {
     public void testRemove() {
         Role checkRole = roleService.findByName("admin");
         assertNotNull(checkRole);
-        roleService.remove(checkRole);
+        if (checkRole != null) {
+            roleService.remove(checkRole);
+        }
         checkRole = roleService.findByName("admin");
+        assertEquals(null, checkRole);
     }
 
     @Test
@@ -89,7 +87,7 @@ public class RoleDAOImplTest {
     @Test
     public void testFindById() {
         roleService.create(role);
-        Role checkRole = roleService.findById(1L);
+        Role checkRole = roleService.findById(role.getId());
         assertEquals("1", checkRole.getId().toString());
     }
 }

@@ -11,6 +11,6 @@ public class Utils {
         if (list == null || list.isEmpty()) {
             return null;
         }
-        return list.get( 0 );
+        return list.get(0);
     }
 }

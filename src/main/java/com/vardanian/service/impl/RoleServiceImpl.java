@@ -13,6 +13,9 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleDAO roleDAO;
 
+    public void setRoleDAO(RoleDAOImpl roleDAO) {
+    }
+
     @Override
     public void create(Role role) {
         roleDAO.create(role);
@@ -41,8 +44,5 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void remove(Role role) {
         roleDAO.remove(role);
-    }
-
-    public void setRoleDAO(RoleDAOImpl roleDAO) {
     }
 }
