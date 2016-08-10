@@ -5,9 +5,14 @@ import com.vardanian.dao.impl.RoleDAOImpl;
 import com.vardanian.entities.Role;
 import com.vardanian.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
+@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 public class RoleServiceImpl implements RoleService {
 
     @Autowired

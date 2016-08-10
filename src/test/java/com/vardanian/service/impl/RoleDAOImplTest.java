@@ -53,26 +53,25 @@ public class RoleDAOImplTest {
     }
 
     @Test
-    public void testList(){
-    assertEquals(0, roleService.list().size());
-    List<Role> roles = Arrays.asList(
-            new Role(1L, "admin"),
-            new Role(2L, "user"),
-            new Role(3L, "user"));
-    for (Role role : roles) {
-        roleService.create(role);
+    public void testList() {
+        assertEquals(0, roleService.list().size());
+        List<Role> roles = Arrays.asList(
+                new Role(1L, "admin"),
+                new Role(2L, "user"),
+                new Role(3L, "user"));
+        for (Role role : roles) {
+            roleService.create(role);
+        }
+        List<Role> checkRoles = roleService.list();
+        assertEquals(3, checkRoles.size());
     }
-    List<Role> checkRoles = roleService.list();
-    assertEquals(3, checkRoles.size());
-}
 
     @Test
     public void testRemove() {
+        roleService.create(role);
         Role checkRole = roleService.findByName("admin");
         assertNotNull(checkRole);
-        if (checkRole != null) {
-            roleService.remove(checkRole);
-        }
+        roleService.remove(checkRole);
         checkRole = roleService.findByName("admin");
         assertEquals(null, checkRole);
     }
@@ -88,6 +87,6 @@ public class RoleDAOImplTest {
     public void testFindById() {
         roleService.create(role);
         Role checkRole = roleService.findById(role.getId());
-        assertEquals("1", checkRole.getId().toString());
+        assertNotNull(checkRole);
     }
 }
