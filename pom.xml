@@ -12,10 +12,13 @@
         <hibernate-core.version>4.2.11.Final</hibernate-core.version>
         <hibernate-entitymanager.version>4.2.11.Final</hibernate-entitymanager.version>
         <hibernate-annotations.version>3.5.6-Final</hibernate-annotations.version>
-        <spring.version>3.2.8.RELEASE</spring.version>
-        <spring-security.version>3.2.3.RELEASE</spring-security.version>
+        <!--<spring.version>3.2.8.RELEASE</spring.version>-->
+        <spring.version>4.2.4.RELEASE</spring.version>
+        <!--<spring-security.version>3.2.3.RELEASE</spring-security.version>-->
+        <spring-security.version>4.0.3.RELEASE</spring-security.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
-        <spring.securiry>3.2.0.RELEASE</spring.securiry>
+        <!--<spring.securiry>3.2.0.RELEASE</spring.securiry>-->
+        <spring.securiry>4.0.3.RELEASE</spring.securiry>
         <jstl.version>1.2</jstl.version>
         <junit.version>4.12</junit.version>
         <mysql-connector-java.version>5.1.38</mysql-connector-java.version>
@@ -114,6 +117,7 @@
             <scope>test</scope>
         </dependency>
 
+
     </dependencies>
     <build>
         <finalName>usersProject</finalName>
@@ -125,6 +129,11 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.19.1</version>
             </plugin>
         </plugins>
     </build>

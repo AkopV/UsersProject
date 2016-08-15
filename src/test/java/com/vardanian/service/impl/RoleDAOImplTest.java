@@ -2,7 +2,10 @@ package com.vardanian.service.impl;
 
 import com.vardanian.entities.Role;
 import com.vardanian.service.RoleService;
+import com.vardanian.service.UserService;
 import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/springConfigurationTest.xml")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class RoleDAOImplTest {
 
     private Role role;
@@ -30,10 +32,40 @@ public class RoleDAOImplTest {
     @Autowired
     private RoleService roleService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    protected Session currentSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
     @Before
     public void setUp() throws Exception {
         role = new Role(1L, "admin");
+    }
 
+    @After
+    public void tearDown() throws Exception {
+        Session session = getSessionFactory().openSession();
+        try {
+            session.createSQLQuery("TRUNCATE TABLE User").executeUpdate();
+            session.createSQLQuery("TRUNCATE TABLE Role").executeUpdate();
+        } catch (Exception e) {
+            System.err.println("don't delete table role");
+        } finally {
+            session.close();
+        }
     }
 
     @Test

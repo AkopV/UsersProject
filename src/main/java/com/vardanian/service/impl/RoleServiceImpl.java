@@ -18,7 +18,12 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleDAO roleDAO;
 
-    public void setRoleDAO(RoleDAOImpl roleDAO) {
+    public RoleDAO getRoleDAO() {
+        return roleDAO;
+    }
+
+    public void setRoleDAO(RoleDAO roleDAO) {
+        this.roleDAO = roleDAO;
     }
 
     @Override

@@ -4,19 +4,18 @@ import com.vardanian.entities.Role;
 import com.vardanian.entities.User;
 import com.vardanian.service.UserService;
 import com.vardanian.utils.TestUtils;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -26,7 +25,6 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/springConfigurationTest.xml")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserDAOImplTest {
 
     private User user;
@@ -34,12 +32,39 @@ public class UserDAOImplTest {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    protected Session currentSession() {
+        return sessionFactory.getCurrentSession();
+    }
+
     @Before
     public void setUp() throws Exception {
         TestUtils.setUserBirthday(1986, Calendar.SEPTEMBER, 9);
         Date date = TestUtils.convertDate(TestUtils.birthDay);
         Role role = new Role(1L, "test");
         user = new User(1L, "testuser", "password", "firstName", "lastName", date, role);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        Session session = getSessionFactory().openSession();
+        try {
+            session.createSQLQuery("TRUNCATE TABLE User").executeUpdate();
+        } catch(Exception e) {
+            System.err.println("don't remove table user");
+        } finally {
+            session.close();
+        }
     }
 
     @Test
