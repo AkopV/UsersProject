@@ -91,11 +91,15 @@ public class UserDAOImplTest {
                 new User(1L, "login", "password", "firstName", "lastName", new Date(1990, 5, 9), new Role(1L, "admin")),
                 new User(2L, "login2", "password2", "firstName2", "lastName2", new Date(1992, 8, 19), new Role(2L, "user")),
                 new User(3L, "login3", "password23", "firstName3", "lastName2", new Date(1992, 8, 19), new Role(3L, "user")));
+        iteratorUsers(users);
+        List<User> checkUsers = userService.list();
+        assertEquals(3, checkUsers.size());
+    }
+
+    public void iteratorUsers(List<User> users) {
         for (User user : users) {
             userService.create(user);
         }
-        List<User> checkUsers = userService.list();
-        assertEquals(3, checkUsers.size());
     }
 
     @Test

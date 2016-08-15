@@ -91,11 +91,15 @@ public class RoleDAOImplTest {
                 new Role(1L, "admin"),
                 new Role(2L, "user"),
                 new Role(3L, "user"));
+        iteratorRole(roles);
+        List<Role> checkRoles = roleService.list();
+        assertEquals(3, checkRoles.size());
+    }
+
+    public void iteratorRole(List<Role> roles) {
         for (Role role : roles) {
             roleService.create(role);
         }
-        List<Role> checkRoles = roleService.list();
-        assertEquals(3, checkRoles.size());
     }
 
     @Test
