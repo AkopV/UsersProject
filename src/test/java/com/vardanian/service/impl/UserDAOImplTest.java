@@ -3,6 +3,7 @@ package com.vardanian.service.impl;
 import com.vardanian.entities.Role;
 import com.vardanian.entities.User;
 import com.vardanian.service.UserService;
+import com.vardanian.utils.CloseableSession;
 import com.vardanian.utils.TestUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -55,13 +56,11 @@ public class UserDAOImplTest {
 
     @After
     public void tearDown() throws Exception {
-        Session session = sessionFactory.openSession();
-        try {
-            session.createSQLQuery("TRUNCATE TABLE User").executeUpdate();
+        try (CloseableSession session = new CloseableSession(
+                sessionFactory.openSession())){
+            session.getSession().createSQLQuery("TRUNCATE TABLE User").executeUpdate();
         } catch(Exception e) {
             System.err.println("Table 'User' wasn't removed");
-        } finally {
-            session.close();
         }
     }
 

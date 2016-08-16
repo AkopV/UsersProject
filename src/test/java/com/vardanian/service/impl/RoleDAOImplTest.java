@@ -3,6 +3,7 @@ package com.vardanian.service.impl;
 import com.vardanian.entities.Role;
 import com.vardanian.service.RoleService;
 import com.vardanian.service.UserService;
+import com.vardanian.utils.CloseableSession;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
@@ -54,13 +55,11 @@ public class RoleDAOImplTest {
 
     @After
     public void tearDown() throws Exception {
-        Session session = sessionFactory.openSession();
-        try {
-            session.createQuery("delete from Role").executeUpdate();
+        try (CloseableSession session = new CloseableSession(
+                sessionFactory.openSession())){
+            session.getSession().createQuery("delete from Role").executeUpdate();
         } catch (Exception e) {
             System.err.println("Table 'Role' weren't removed");
-        } finally {
-            session.close();
         }
     }
 
