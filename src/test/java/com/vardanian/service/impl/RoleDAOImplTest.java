@@ -3,7 +3,6 @@ package com.vardanian.service.impl;
 import com.vardanian.entities.Role;
 import com.vardanian.service.RoleService;
 import com.vardanian.service.UserService;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
@@ -11,11 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.persistence.EntityManager;
 import java.util.Arrays;
 import java.util.List;
 
@@ -57,12 +54,11 @@ public class RoleDAOImplTest {
 
     @After
     public void tearDown() throws Exception {
-        Session session = getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         try {
-            session.createSQLQuery("TRUNCATE TABLE User").executeUpdate();
-            session.createSQLQuery("TRUNCATE TABLE Role").executeUpdate();
+            session.createQuery("delete from Role").executeUpdate();
         } catch (Exception e) {
-            System.err.println("don't delete table role");
+            System.err.println("Table 'Role' weren't removed");
         } finally {
             session.close();
         }
@@ -86,17 +82,17 @@ public class RoleDAOImplTest {
 
     @Test
     public void testList() {
-        assertEquals(0, roleService.list().size());
+        assertTrue(roleService.list().isEmpty());
         List<Role> roles = Arrays.asList(
                 new Role(1L, "admin"),
                 new Role(2L, "user"),
                 new Role(3L, "user"));
-        iteratorRole(roles);
+        createRoles(roles);
         List<Role> checkRoles = roleService.list();
         assertEquals(3, checkRoles.size());
     }
 
-    public void iteratorRole(List<Role> roles) {
+    private void createRoles(List<Role> roles) {
         for (Role role : roles) {
             roleService.create(role);
         }

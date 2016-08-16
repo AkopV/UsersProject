@@ -5,6 +5,7 @@ import com.vardanian.entities.User;
 import com.vardanian.utils.Utils;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -53,7 +54,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User findById(Long id) {
-        return entityManager.find(User.class, id);
+        return entityManager.getReference(User.class, id);
     }
 
     @Override

@@ -4,8 +4,6 @@ import com.vardanian.entities.Role;
 import com.vardanian.entities.User;
 import com.vardanian.service.UserService;
 import com.vardanian.utils.TestUtils;
-import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.After;
@@ -57,11 +55,11 @@ public class UserDAOImplTest {
 
     @After
     public void tearDown() throws Exception {
-        Session session = getSessionFactory().openSession();
+        Session session = sessionFactory.openSession();
         try {
             session.createSQLQuery("TRUNCATE TABLE User").executeUpdate();
         } catch(Exception e) {
-            System.err.println("don't remove table user");
+            System.err.println("Table 'User' wasn't removed");
         } finally {
             session.close();
         }
@@ -85,18 +83,17 @@ public class UserDAOImplTest {
 
     @Test
     public void testList() {
-        List<User> users;
-        assertEquals(0, userService.list().size());
-        users = Arrays.asList(
+        assertTrue(userService.list().isEmpty());
+        List<User> users = Arrays.asList(
                 new User(1L, "login", "password", "firstName", "lastName", new Date(1990, 5, 9), new Role(1L, "admin")),
                 new User(2L, "login2", "password2", "firstName2", "lastName2", new Date(1992, 8, 19), new Role(2L, "user")),
                 new User(3L, "login3", "password23", "firstName3", "lastName2", new Date(1992, 8, 19), new Role(3L, "user")));
-        iteratorUsers(users);
+        createUsers(users);
         List<User> checkUsers = userService.list();
         assertEquals(3, checkUsers.size());
     }
 
-    public void iteratorUsers(List<User> users) {
+    private void createUsers(List<User> users) {
         for (User user : users) {
             userService.create(user);
         }
