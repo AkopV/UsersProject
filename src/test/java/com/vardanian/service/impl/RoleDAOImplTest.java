@@ -59,7 +59,7 @@ public class RoleDAOImplTest {
                 sessionFactory.openSession())){
             session.getSession().createQuery("delete from Role").executeUpdate();
         } catch (Exception e) {
-            System.err.println("Table 'Role' weren't removed");
+            System.err.println("Table 'Role' wasn't removed");
         }
     }
 
