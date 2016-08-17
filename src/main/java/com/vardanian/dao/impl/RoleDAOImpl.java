@@ -4,6 +4,7 @@ import com.vardanian.dao.RoleDAO;
 import com.vardanian.entities.Role;
 import com.vardanian.utils.Utils;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -30,7 +31,12 @@ public class RoleDAOImpl implements RoleDAO {
     @Override
     public void create(Role role) {
         try {
-            entityManager.merge(role);
+            if (role.getId() == null) {
+                entityManager.persist(role);
+                entityManager.refresh(role);
+            } else {
+                entityManager.merge(role);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -39,7 +45,7 @@ public class RoleDAOImpl implements RoleDAO {
     @Override
     public void update(Role role) {
         try {
-        entityManager.merge(role);
+            entityManager.merge(role);
         } catch (Exception e) {
             System.err.println("Role not update: " + e);
         }

@@ -30,7 +30,12 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void create(User user) {
         try {
+            if(user.getId() == null) {
+                entityManager.persist(user);
+                entityManager.refresh(user);
+            } else {
             entityManager.merge(user);
+            }
         } catch (Exception e) {
             System.err.println("User not create: " + e);
         }
