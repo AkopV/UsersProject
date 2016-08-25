@@ -12,8 +12,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.Arrays;
@@ -64,14 +67,14 @@ public class UserDAOImplTest {
         }
     }
 
-    @Test
+    @Test(expected = DataIntegrityViolationException.class)
     public void testCreate() {
         userService.create(user);
         User user = userService.findByLogin("testuser");
         assertEquals("testuser", user.getLogin());
     }
 
-    @Test
+    @Test(expected = DataIntegrityViolationException.class)
     public void testUpdate() {
         userService.create(user);
         user.setLogin("testuser2");
@@ -80,13 +83,13 @@ public class UserDAOImplTest {
         assertEquals("testuser2", user.getLogin());
     }
 
-    @Test
+    @Test(expected = DataIntegrityViolationException.class)
     public void testList() {
         assertTrue(userService.list().isEmpty());
         List<User> users = Arrays.asList(
-                new User(1L, "login", "password", "firstName", "lastName", new Date(1990, 5, 9), new Role(1L, "admin")),
-                new User(2L, "login2", "password2", "firstName2", "lastName2", new Date(1992, 8, 19), new Role(2L, "user")),
-                new User(3L, "login3", "password23", "firstName3", "lastName2", new Date(1992, 8, 19), new Role(3L, "user")));
+                new User(2L, "login", "password", "firstName", "lastName", new Date(1990, 5, 9), new Role(3L, "admin")),
+                new User(3L, "login2", "password2", "firstName2", "lastName2", new Date(1992, 8, 19), new Role(3L, "user")),
+                new User(4L, "login3", "password23", "firstName3", "lastName2", new Date(1992, 8, 19), new Role(4L, "user")));
         createUsers(users);
         List<User> checkUsers = userService.list();
         assertEquals(3, checkUsers.size());
@@ -98,7 +101,7 @@ public class UserDAOImplTest {
         }
     }
 
-    @Test
+    @Test(expected = DataIntegrityViolationException.class)
     public void testRemove() {
         userService.create(user);
         User checkUser = userService.findByLogin("testuser");
@@ -108,14 +111,14 @@ public class UserDAOImplTest {
         assertEquals(null, checkUser);
     }
 
-    @Test
+    @Test(expected = DataIntegrityViolationException.class)
     public void testFindByLogin() {
         userService.create(user);
         user = userService.findByLogin("testuser");
         assertEquals("testuser", user.getLogin());
     }
 
-    @Test
+    @Test(expected = DataIntegrityViolationException.class)
     public void testFindById() {
         userService.create(user);
         User checkUser = userService.findById(user.getId());

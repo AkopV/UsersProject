@@ -116,6 +116,11 @@
             <version>6.9.10</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.glassfish.main.persistence</groupId>
+            <artifactId>persistence</artifactId>
+            <version>4.0</version>
+        </dependency>
 
 
     </dependencies>

@@ -27,16 +27,10 @@ public class RoleDAOImpl implements RoleDAO {
         this.entityManager = entityManager;
     }
 
-    @Transactional
     @Override
     public void create(Role role) {
         try {
-            if (role.getId() == null) {
                 entityManager.persist(role);
-                entityManager.refresh(role);
-            } else {
-                entityManager.merge(role);
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }

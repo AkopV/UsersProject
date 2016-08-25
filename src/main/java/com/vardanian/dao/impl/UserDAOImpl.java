@@ -4,6 +4,8 @@ import com.vardanian.dao.UserDAO;
 import com.vardanian.entities.User;
 import com.vardanian.utils.Utils;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
@@ -27,15 +29,11 @@ public class UserDAOImpl implements UserDAO {
         this.entityManager = entityManager;
     }
 
+
     @Override
     public void create(User user) {
         try {
-            if(user.getId() == null) {
                 entityManager.persist(user);
-                entityManager.refresh(user);
-            } else {
-            entityManager.merge(user);
-            }
         } catch (Exception e) {
             System.err.println("User not create: " + e);
         }

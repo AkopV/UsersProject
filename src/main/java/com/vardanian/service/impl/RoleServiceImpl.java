@@ -6,13 +6,15 @@ import com.vardanian.entities.Role;
 import com.vardanian.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+@Transactional(noRollbackFor = Exception.class)
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 public class RoleServiceImpl implements RoleService {
 
     @Autowired

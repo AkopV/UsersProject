@@ -10,8 +10,6 @@ import java.util.Date;
 public class User {
 
     @Id
-    @GenericGenerator(name = "increment", strategy = "increment")
-    @GeneratedValue(generator = "increment")
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -31,7 +29,10 @@ public class User {
     @Column(name = "birthday", nullable = false)
     private Date birthday;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToOne(
+            fetch = FetchType.EAGER,
+            cascade=CascadeType.PERSIST)
+//            cascade = CascadeType.MERGE)
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role role;
 
