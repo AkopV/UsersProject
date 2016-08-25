@@ -83,9 +83,9 @@ public class RoleDAOImplTest {
     public void testList() {
         assertTrue(roleService.list().isEmpty());
         List<Role> roles = Arrays.asList(
-                new Role(2L, "admin"),
-                new Role(3L, "user"),
-                new Role(4L, "user"));
+                new Role(1L, "admin"),
+                new Role(2L, "user"),
+                new Role(3L, "user"));
         createRoles(roles);
         List<Role> checkRoles = roleService.list();
         assertEquals(3, checkRoles.size());

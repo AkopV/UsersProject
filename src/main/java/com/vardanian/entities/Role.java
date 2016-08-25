@@ -10,6 +10,8 @@ import org.hibernate.annotations.OptimisticLockType;
 public class Role {
 
     @Id
+    @GenericGenerator(name = "increment", strategy = "increment")
+    @GeneratedValue(generator = "increment")
     @Column(name = "id", nullable = false)
     private Long id;
 

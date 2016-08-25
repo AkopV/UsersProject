@@ -12,12 +12,9 @@
         <hibernate-core.version>4.2.11.Final</hibernate-core.version>
         <hibernate-entitymanager.version>4.2.11.Final</hibernate-entitymanager.version>
         <hibernate-annotations.version>3.5.6-Final</hibernate-annotations.version>
-        <!--<spring.version>3.2.8.RELEASE</spring.version>-->
         <spring.version>4.2.4.RELEASE</spring.version>
-        <!--<spring-security.version>3.2.3.RELEASE</spring-security.version>-->
         <spring-security.version>4.0.3.RELEASE</spring-security.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
-        <!--<spring.securiry>3.2.0.RELEASE</spring.securiry>-->
         <spring.securiry>4.0.3.RELEASE</spring.securiry>
         <jstl.version>1.2</jstl.version>
         <junit.version>4.12</junit.version>
@@ -115,11 +112,6 @@
             <artifactId>testng</artifactId>
             <version>6.9.10</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.main.persistence</groupId>
-            <artifactId>persistence</artifactId>
-            <version>4.0</version>
         </dependency>
 
 

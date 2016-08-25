@@ -1,19 +1,17 @@
 package com.vardanian.service.impl;
 
 import com.vardanian.dao.RoleDAO;
-import com.vardanian.dao.impl.RoleDAOImpl;
 import com.vardanian.entities.Role;
 import com.vardanian.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@Transactional(noRollbackFor = Exception.class)
+@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 @TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 public class RoleServiceImpl implements RoleService {
 
