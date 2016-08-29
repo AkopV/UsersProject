@@ -3,7 +3,6 @@ package com.vardanian.entities;
 import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OptimisticLockType;
 
 @Entity
 @Table(name = "Role")
